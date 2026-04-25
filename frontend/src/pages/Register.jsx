@@ -52,6 +52,7 @@ const Register = () => {
         setIsLoading(true);
         try {
             await register(name, email, password);
+            // Will land on dashboard; trial/payment logic handles the rest
             navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.msg || 'User already exists or registration failed');

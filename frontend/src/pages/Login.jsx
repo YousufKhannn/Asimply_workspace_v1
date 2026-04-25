@@ -32,7 +32,8 @@ const Login = () => {
         
         setIsLoading(true);
         try {
-            await login(email, password);
+            const result = await login(email, password);
+            // PaidRoute in App.jsx will redirect to /payment if not paid
             navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.msg || 'Invalid email or password');

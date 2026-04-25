@@ -28,7 +28,7 @@ router.post('/register', async (req, res) => {
 
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5 days' }, (err, token) => {
             if (err) throw err;
-            res.json({ token, user: newUser.rows[0] });
+            res.json({ token, user: { ...newUser.rows[0], is_paid: false } });
         });
     } catch (err) {
         console.error(err.message);
@@ -56,7 +56,7 @@ router.post('/login', async (req, res) => {
 
         jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '5 days' }, (err, token) => {
             if (err) throw err;
-            res.json({ token, user: { id: user.rows[0].id, name: user.rows[0].name, email: user.rows[0].email } });
+            res.json({ token, user: { id: user.rows[0].id, name: user.rows[0].name, email: user.rows[0].email, is_paid: user.rows[0].is_paid } });
         });
     } catch (err) {
         console.error(err.message);
@@ -68,7 +68,7 @@ router.post('/login', async (req, res) => {
 // @desc    Get user profile
 router.get('/profile', auth, async (req, res) => {
     try {
-        const user = await pool.query('SELECT id, name, email, created_at FROM users WHERE id = $1', [req.user.id]);
+        const user = await pool.query('SELECT id, name, email, is_paid, created_at FROM users WHERE id = $1', [req.user.id]);
         res.json(user.rows[0]);
     } catch (err) {
         console.error(err.message);

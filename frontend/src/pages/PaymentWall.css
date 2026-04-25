@@ -1,0 +1,271 @@
+/* =========================================================
+   PaymentWall.css — Asimply Payment Screen
+   ========================================================= */
+
+.pw-root {
+    min-height: 100vh;
+    background: #F8F7F5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.pw-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    padding: 2.5rem 2rem;
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+}
+
+/* Logo */
+.pw-logo {
+    height: 38px;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+/* Title */
+.pw-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #111827;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.pw-sub {
+    font-size: 0.97rem;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+.pw-sub strong { color: #111827; }
+
+/* Steps hint */
+.pw-steps-hint {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.pw-step-pill {
+    background: rgba(233, 155, 40, 0.1);
+    color: #c77e16;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 20px;
+    border: 1px solid rgba(233, 155, 40, 0.25);
+    white-space: nowrap;
+}
+
+.pw-step-arrow {
+    color: #d1d5db;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* QR */
+.pw-qr-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    background: #F8F7F5;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 1.25rem 1.5rem 1rem;
+    width: 100%;
+}
+
+.pw-qr {
+    display: block;
+    border-radius: 10px;
+    border: 3px solid #E99B28;
+}
+
+.pw-qr-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #374151;
+    margin: 0;
+    letter-spacing: 0.1px;
+}
+
+/* Divider */
+.pw-divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: #9ca3af;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+.pw-divider::before,
+.pw-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+}
+
+/* Manual UPI box */
+.pw-upi-box {
+    width: 100%;
+    background: #F8F7F5;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.pw-upi-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.pw-upi-label {
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.pw-upi-value {
+    color: #111827;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    font-size: 0.88rem;
+}
+
+.pw-amount {
+    color: #E99B28;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.pw-btn-copy {
+    align-self: flex-start;
+    background: transparent;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #374151;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    font-family: inherit;
+}
+.pw-btn-copy:hover {
+    border-color: #E99B28;
+    color: #c77e16;
+    background: rgba(233,155,40,0.06);
+}
+
+/* CTA button */
+.pw-btn-paid {
+    width: 100%;
+    background: #E99B28;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 10px;
+    padding: 0.9rem;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(233,155,40,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+}
+.pw-btn-paid:hover:not(:disabled) {
+    background: #c77e16;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(233,155,40,0.35);
+}
+.pw-btn-paid:active:not(:disabled) { transform: scale(0.98); }
+.pw-btn-paid:disabled { opacity: 0.7; cursor: not-allowed; }
+
+/* Spinner inside button */
+.pw-spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: pw-spin 0.7s linear infinite;
+}
+@keyframes pw-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Success */
+.pw-success {
+    width: 100%;
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #15803d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.pw-success-icon {
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+/* Error */
+.pw-error {
+    color: #b91c1c;
+    font-size: 0.85rem;
+    font-weight: 500;
+    background: #fee2e2;
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    width: 100%;
+    text-align: center;
+}
+
+/* Footnote */
+.pw-footnote {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .pw-card {
+        padding: 2rem 1.25rem;
+        border-radius: 16px;
+        gap: 1rem;
+    }
+    .pw-title { font-size: 1.35rem; }
+    .pw-qr { width: 190px; height: 190px; }
+}
