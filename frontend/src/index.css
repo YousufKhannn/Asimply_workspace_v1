@@ -728,3 +728,133 @@ input:focus, select:focus {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* Auth Layout */
+.auth-split-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: #FAFBFC;
+}
+
+.auth-left {
+    flex: 1;
+    background-color: #0E131F;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-left::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(233,155,40,0.05) 0%, rgba(14,19,31,0) 50%);
+    pointer-events: none;
+}
+
+.auth-left h1 {
+    color: #D4BBA4;
+    font-size: 2.75rem;
+    margin-bottom: 1rem;
+    font-weight: 800;
+    line-height: 1.2;
+    z-index: 1;
+}
+
+.auth-left p {
+    font-size: 1.15rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 450px;
+    line-height: 1.6;
+    z-index: 1;
+}
+
+.auth-right {
+    flex: 1.2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.auth-form-container {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    padding: 3rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+}
+
+.password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 0;
+    outline: none;
+}
+
+.password-toggle:hover {
+    color: var(--primary-color);
+}
+
+.auth-footer-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.auth-footer-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.auth-footer-link a:hover {
+    color: #c77e16;
+}
+
+@media (max-width: 900px) {
+    .auth-split-layout {
+        flex-direction: column;
+    }
+    .auth-left {
+        flex: none;
+        padding: 3rem 2rem;
+        text-align: center;
+        align-items: center;
+    }
+    .auth-left p {
+        margin: 0 auto;
+    }
+    .auth-right {
+        padding: 1.5rem;
+        justify-content: flex-start;
+    }
+    .auth-form-container {
+        padding: 2rem;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+    }
+}

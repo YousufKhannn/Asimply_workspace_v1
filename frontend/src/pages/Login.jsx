@@ -5,42 +5,98 @@ import { AuthContext } from '../context/AuthContext';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    const validateForm = () => {
+        if (!email || !password) {
+            setError('Please fill in all fields.');
+            return false;
+        }
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+            setError('Please enter a valid email address.');
+            return false;
+        }
+        return true;
+    };
+
     const onSubmit = async e => {
         e.preventDefault();
+        setError('');
+        
+        if (!validateForm()) return;
+        
+        setIsLoading(true);
         try {
             await login(email, password);
             navigate('/dashboard');
         } catch (err) {
-            setError(err.response?.data?.msg || 'Login failed');
+            setError(err.response?.data?.msg || 'Invalid email or password');
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="home-view" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="home-content" style={{ marginTop: 0, padding: '2rem', background: '#fff', borderRadius: '16px', border: '1px solid var(--border-color)', width: '100%', maxWidth: '400px' }}>
-                <img src="/asimplylogo.png" alt="Asimply Logo" className="home-logo" style={{ margin: '0 auto 1.5rem', display: 'block' }} />
-                <h2 style={{ textAlign: 'center', marginBottom: '1.5rem', color: 'var(--text-dark)' }}>Sign In to Workspace</h2>
-                {error && <div className="alert-box alert-danger" style={{ marginBottom: '1rem', padding: '0.75rem' }}>{error}</div>}
-                
-                <form onSubmit={onSubmit} id="transaction-form" style={{ gap: '1rem' }}>
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+        <div className="auth-split-layout">
+            <div className="auth-left">
+                <img src="/asimplylogo.png" alt="Asimply" style={{ height: '40px', width: 'auto', marginBottom: 'auto' }} />
+                <div style={{ marginTop: 'auto', marginBottom: 'auto' }}>
+                    <h1>Know where your<br />business money is going</h1>
+                    <p>Track profit, expenses, and cash flow in one place. No complexity. Just clarity.</p>
+                </div>
+            </div>
+            
+            <div className="auth-right">
+                <div className="auth-form-container">
+                    <h2 style={{ color: 'var(--text-dark)', marginBottom: '0.5rem', fontSize: '1.75rem', fontWeight: '700' }}>Welcome back</h2>
+                    <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>Enter your details to access your workspace.</p>
+                    
+                    {error && <div className="alert-box alert-danger" style={{ marginBottom: '1.5rem', padding: '0.85rem' }}>{error}</div>}
+                    
+                    <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <label style={{ fontSize: '0.9rem', fontWeight: '600', marginBottom: '0.4rem', color: 'var(--text-main)' }}>Email</label>
+                            <input 
+                                type="email" 
+                                placeholder="name@company.com"
+                                value={email} 
+                                onChange={e => setEmail(e.target.value)} 
+                                required 
+                            />
+                        </div>
+                        
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                                <label style={{ fontSize: '0.9rem', fontWeight: '600', margin: 0, color: 'var(--text-main)' }}>Password</label>
+                                <a href="#" onClick={(e) => e.preventDefault()} style={{ fontSize: '0.85rem', color: 'var(--primary-color)', textDecoration: 'none', fontWeight: '500' }}>Forgot password?</a>
+                            </div>
+                            <div className="password-wrapper">
+                                <input 
+                                    type={showPassword ? "text" : "password"} 
+                                    placeholder="••••••••"
+                                    value={password} 
+                                    onChange={e => setPassword(e.target.value)} 
+                                    required 
+                                />
+                                <button type="button" className="password-toggle" onClick={() => setShowPassword(!showPassword)}>
+                                    <i className={`fa-solid ${showPassword ? 'fa-eye-slash' : 'fa-eye'}`}></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '0.5rem', height: '48px', fontSize: '1rem' }} disabled={isLoading}>
+                            {isLoading ? 'Logging in...' : 'Login'}
+                        </button>
+                    </form>
+                    
+                    <div className="auth-footer-link">
+                        Don't have an account? <Link to="/register">Sign up</Link>
                     </div>
-                    <div className="form-group">
-                        <label>Password</label>
-                        <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-                    </div>
-                    <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Login</button>
-                </form>
-                
-                <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-                    Don't have an account? <Link to="/register" style={{ color: 'var(--primary-color)', fontWeight: '600', textDecoration: 'none' }}>Sign Up</Link>
-                </p>
+                </div>
             </div>
         </div>
     );
