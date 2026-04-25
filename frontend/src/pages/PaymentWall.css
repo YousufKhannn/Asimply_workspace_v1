@@ -179,6 +179,44 @@
     background: rgba(233,155,40,0.06);
 }
 
+/* UTR Box */
+.pw-utr-box {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.pw-utr-label {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.pw-utr-input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+}
+
+.pw-utr-input:focus {
+    border-color: #E99B28;
+    box-shadow: 0 0 0 4px rgba(233,155,40,0.1);
+}
+
+.pw-utr-hint {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin: 0;
+}
+
 /* CTA button */
 .pw-btn-paid {
     width: 100%;

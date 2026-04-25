@@ -6,12 +6,18 @@ const auth = require('../middleware/auth');
 // @route   POST /api/payment/verify
 // @desc    Mark the authenticated user as paid (MVP - no gateway)
 router.post('/verify', auth, async (req, res) => {
+    const { utr } = req.body;
+
+    if (!utr || utr.length < 8) {
+        return res.status(400).json({ msg: 'Please enter a valid 12-digit UTR or Transaction ID.' });
+    }
+
     try {
         await pool.query(
-            'UPDATE users SET is_paid = true WHERE id = $1',
-            [req.user.id]
+            'UPDATE users SET is_paid = true, payment_utr = $1 WHERE id = $2',
+            [utr, req.user.id]
         );
-        res.json({ success: true, msg: 'Payment verified. Full access granted.' });
+        res.json({ success: true, msg: 'Payment details submitted. Access granted.' });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');

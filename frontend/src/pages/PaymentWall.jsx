@@ -17,6 +17,7 @@ const PaymentWall = () => {
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
+    const [utr, setUtr] = useState('');
 
     const handleCopyUPI = () => {
         navigator.clipboard.writeText(UPI_ID).then(() => {
@@ -26,15 +27,20 @@ const PaymentWall = () => {
     };
 
     const handlePaid = async () => {
+        if (!utr || utr.length < 8) {
+            setError('Please enter a valid Transaction ID / UTR.');
+            return;
+        }
+
         setLoading(true);
         setError('');
         try {
-            await axios.post(`${API_URL}/api/payment/verify`);
+            await axios.post(`${API_URL}/api/payment/verify`, { utr });
             markPaid();
             setSuccess(true);
             setTimeout(() => navigate('/dashboard'), 1800);
         } catch (err) {
-            setError('Something went wrong. Please try again.');
+            setError(err.response?.data?.msg || 'Something went wrong. Please try again.');
             setLoading(false);
         }
     };
@@ -91,6 +97,19 @@ const PaymentWall = () => {
                     >
                         {copied ? '✓ Copied!' : 'Copy UPI ID'}
                     </button>
+                </div>
+
+                {/* UTR Input */}
+                <div className="pw-utr-box">
+                    <label className="pw-utr-label">Enter Transaction ID / UTR</label>
+                    <input 
+                        type="text" 
+                        placeholder="12-digit number from your UPI app" 
+                        value={utr}
+                        onChange={(e) => setUtr(e.target.value)}
+                        className="pw-utr-input"
+                    />
+                    <p className="pw-utr-hint">Check your payment confirmation for the UTR/Ref No.</p>
                 </div>
 
                 {/* Error */}
