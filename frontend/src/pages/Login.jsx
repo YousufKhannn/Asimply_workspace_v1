@@ -43,8 +43,8 @@ const Login = () => {
     return (
         <div className="auth-split-layout">
             <div className="auth-left">
-                <img src="/asimplylogo.png" alt="Asimply" style={{ height: '40px', width: 'auto', marginBottom: 'auto' }} />
                 <div style={{ marginTop: 'auto', marginBottom: 'auto' }}>
+                    <p style={{ color: '#E99B28', fontWeight: '700', fontSize: '0.9rem', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '1.5rem' }}>Asimply</p>
                     <h1>Know where your<br />business money is going</h1>
                     <p>Track profit, expenses, and cash flow in one place. No complexity. Just clarity.</p>
                 </div>
@@ -52,6 +52,19 @@ const Login = () => {
             
             <div className="auth-right">
                 <div className="auth-form-container">
+                    <div style={{ marginBottom: '2rem' }}>
+                        <img 
+                            src="/asimplylogo.png" 
+                            alt="Asimply" 
+                            style={{ 
+                                maxWidth: '160px', 
+                                width: 'auto', 
+                                height: 'auto',
+                                objectFit: 'contain',
+                                display: 'block'
+                            }} 
+                        />
+                    </div>
                     <h2 style={{ color: 'var(--text-dark)', marginBottom: '0.5rem', fontSize: '1.75rem', fontWeight: '700' }}>Welcome back</h2>
                     <p style={{ color: 'var(--text-muted)', marginBottom: '2rem', fontSize: '0.95rem' }}>Enter your details to access your workspace.</p>
                     
