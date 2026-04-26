@@ -3,8 +3,10 @@ import { AuthProvider, AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
+import FinanceDashboard from './pages/FinanceDashboard';
+import CRMDashboard from './pages/CRMDashboard';
 import LandingPage from './pages/LandingPage';
+import Layout from './components/Layout';
 
 // Requires login
 const PrivateRoute = ({ children }) => {
@@ -12,8 +14,6 @@ const PrivateRoute = ({ children }) => {
     if (loading) return <div className="loader-view" style={{display: 'flex'}}><div className="spinner"></div></div>;
     return user ? children : <Navigate to="/login" />;
 };
-
-
 
 function App() {
     return (
@@ -23,14 +23,19 @@ function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
+                    
                     <Route
                         path="/dashboard"
                         element={
                             <PrivateRoute>
-                                <Dashboard />
+                                <Layout />
                             </PrivateRoute>
                         }
-                    />
+                    >
+                        <Route index element={<Navigate to="/dashboard/finance" replace />} />
+                        <Route path="finance" element={<FinanceDashboard />} />
+                        <Route path="crm" element={<CRMDashboard />} />
+                    </Route>
                 </Routes>
             </Router>
         </AuthProvider>

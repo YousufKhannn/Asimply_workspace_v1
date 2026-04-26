@@ -7,10 +7,19 @@ const auth = require('../middleware/auth');
 // @desc    Add new receivable
 router.post('/', auth, async (req, res) => {
     try {
-        const { client_name, amount, due_date } = req.body;
+        let { client_name, amount, due_date, client_id } = req.body;
+        
+        // If client_id is provided, ensure we use the correct client name
+        if (client_id) {
+            const clientRes = await pool.query('SELECT name FROM clients WHERE id = $1', [client_id]);
+            if (clientRes.rows.length > 0) {
+                client_name = clientRes.rows[0].name;
+            }
+        }
+
         const newEntry = await pool.query(
-            'INSERT INTO receivables (user_id, client_name, amount, due_date) VALUES ($1, $2, $3, $4) RETURNING *',
-            [req.user.id, client_name, amount, due_date]
+            'INSERT INTO receivables (user_id, client_name, amount, due_date, client_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [req.user.id, client_name, amount, due_date, client_id || null]
         );
         res.json(newEntry.rows[0]);
     } catch (err) {

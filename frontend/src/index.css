@@ -1858,6 +1858,201 @@ input:focus, select:focus {
     animation: spin 0.8s linear infinite;
 }
 
+
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* --- Integrated Layout & Sidebar --- */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 260px;
+    background-color: #0E131F;
+    color: white;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+}
+
+.sidebar-logo {
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar-logo img {
+    height: 40px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.nav-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.nav-section-title {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 1.5rem 0 0.75rem 0.5rem;
+    font-weight: 700;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.9rem 1.25rem;
+    border-radius: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-item i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+}
+
+.nav-item.active {
+    background-color: var(--accent-color);
+    color: white;
+    box-shadow: 0 8px 20px rgba(233, 155, 40, 0.25);
+}
+
+.app-main {
+    flex: 1;
+    margin-left: 260px;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+}
+
+/* --- Kanban Board --- */
+.kanban-board {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    min-height: 70vh;
+    align-items: start;
+}
+
+.kanban-column {
+    background: #F1F3F5;
+    border-radius: 14px;
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 200px;
+    border: 1px solid #E9ECEF;
+}
+
+.kanban-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+}
+
+.kanban-header h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 800;
+}
+
+.column-count {
+    background: rgba(0,0,0,0.05);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.deal-card {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.deal-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+    border-color: var(--primary-color);
+}
+
+.deal-card h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.deal-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.deal-value {
+    font-weight: 800;
+    color: var(--accent-color);
+    font-size: 1.1rem;
+}
+
+.deal-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+/* CRM Mobile Adjustments */
+@media (max-width: 1024px) {
+    .kanban-board {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+        padding: 1.5rem 0.5rem;
+    }
+    .nav-item span, .nav-section-title, .sidebar-logo {
+        display: none;
+    }
+    .app-main {
+        margin-left: 70px;
+    }
+    .kanban-board {
+        grid-template-columns: 1fr;
+    }
 }

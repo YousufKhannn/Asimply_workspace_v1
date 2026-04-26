@@ -8,6 +8,7 @@ const analyticsRoutes = require('./routes/analytics');
 const receivablesRoutes = require('./routes/receivables');
 const payablesRoutes = require('./routes/payables');
 const aiRoutes = require('./routes/ai');
+const crmRoutes = require('./routes/crm');
 
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/receivables', receivablesRoutes);
 app.use('/api/payables', payablesRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/crm', crmRoutes);
 
 
 // Health check
