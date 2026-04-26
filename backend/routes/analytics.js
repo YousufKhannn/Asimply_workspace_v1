@@ -312,4 +312,111 @@ router.get('/health', auth, async (req, res) => {
     }
 });
 
+// ─────────────────────────────────────────────
+// FEATURE 4: Cash Gap Forecast
+// GET /api/analytics/cash-forecast?range=7|15|30
+// ─────────────────────────────────────────────
+router.get('/cash-forecast', auth, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const range = parseInt(req.query.range) || 7;
+        if (![7, 15, 30].includes(range)) {
+            return res.status(400).json({ msg: 'Range must be 7, 15, or 30' });
+        }
+
+        // 1. Compute current cash from all transactions
+        const txResult = await pool.query(
+            'SELECT type, amount FROM transactions WHERE user_id = $1',
+            [userId]
+        );
+        let totalIncome = 0;
+        let totalExpense = 0;
+        txResult.rows.forEach(t => {
+            const amt = parseFloat(t.amount);
+            if (t.type === 'income') totalIncome += amt;
+            else totalExpense += amt;
+        });
+        const currentCash = totalIncome - totalExpense;
+
+        // 2. Fetch pending receivables and payables within the range
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const rangeEnd = new Date(today);
+        rangeEnd.setDate(today.getDate() + range);
+        const rangeEndStr = rangeEnd.toISOString().split('T')[0];
+
+        const [recResult, payResult] = await Promise.all([
+            pool.query(
+                `SELECT amount, due_date FROM receivables
+                 WHERE user_id = $1 AND status = 'pending' AND due_date <= $2`,
+                [userId, rangeEndStr]
+            ),
+            pool.query(
+                `SELECT amount, due_date FROM payables
+                 WHERE user_id = $1 AND status = 'pending' AND due_date <= $2`,
+                [userId, rangeEndStr]
+            )
+        ]);
+
+        // 3. Index events by date string (YYYY-MM-DD)
+        const inflows = {};   // date → total incoming
+        const outflows = {};  // date → total outgoing
+
+        recResult.rows.forEach(r => {
+            const d = new Date(r.due_date).toISOString().split('T')[0];
+            inflows[d] = (inflows[d] || 0) + parseFloat(r.amount);
+        });
+
+        payResult.rows.forEach(p => {
+            const d = new Date(p.due_date).toISOString().split('T')[0];
+            outflows[d] = (outflows[d] || 0) + parseFloat(p.amount);
+        });
+
+        // 4. Build day-by-day timeline
+        let balance = currentCash;
+        let totalIncoming = 0;
+        let totalOutgoing = 0;
+        let risk = false;
+        let riskDate = null;
+
+        const timeline = [];
+
+        for (let i = 0; i < range; i++) {
+            const day = new Date(today);
+            day.setDate(today.getDate() + i);
+            const dateStr = day.toISOString().split('T')[0];
+
+            const dayIn = inflows[dateStr] || 0;
+            const dayOut = outflows[dateStr] || 0;
+
+            balance += dayIn - dayOut;
+            totalIncoming += dayIn;
+            totalOutgoing += dayOut;
+
+            timeline.push({ date: dateStr, balance: parseFloat(balance.toFixed(2)) });
+
+            if (!risk && balance < 0) {
+                risk = true;
+                riskDate = dateStr;
+            }
+        }
+
+        res.json({
+            summary: {
+                current_cash: parseFloat(currentCash.toFixed(2)),
+                total_incoming: parseFloat(totalIncoming.toFixed(2)),
+                total_outgoing: parseFloat(totalOutgoing.toFixed(2)),
+                net_projection: parseFloat((currentCash + totalIncoming - totalOutgoing).toFixed(2)),
+                risk,
+                risk_date: riskDate
+            },
+            timeline
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+});
+
 module.exports = router;
+

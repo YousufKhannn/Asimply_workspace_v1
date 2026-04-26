@@ -24,6 +24,10 @@ const Dashboard = () => {
     const [leakage, setLeakage] = useState([]);
     const [healthScore, setHealthScore] = useState(null);
 
+    // Cash Forecast state
+    const [forecastRange, setForecastRange] = useState(7);
+    const [forecastData, setForecastData] = useState(null);
+    const [forecastLoading, setForecastLoading] = useState(false);
 
     
     const [alerts, setAlerts] = useState([]);
@@ -53,6 +57,22 @@ const Dashboard = () => {
     useEffect(() => {
         fetchData();
     }, []);
+
+    useEffect(() => {
+        fetchForecast(forecastRange);
+    }, [forecastRange]);
+
+    const fetchForecast = async (range) => {
+        setForecastLoading(true);
+        try {
+            const res = await axios.get(`${API_URL}/api/analytics/cash-forecast?range=${range}`);
+            setForecastData(res.data);
+        } catch (err) {
+            console.error('Forecast error', err);
+        } finally {
+            setForecastLoading(false);
+        }
+    };
 
     const fetchData = async () => {
         try {
@@ -223,6 +243,10 @@ const Dashboard = () => {
         return 'var(--danger-bg)';
     };
 
+    const formatForecastDate = (dateStr) => {
+        return new Date(dateStr + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    };
+
     return (
         <div id="dashboard-view" style={{ display: 'block' }}>
             <header className="header">
@@ -350,6 +374,129 @@ const Dashboard = () => {
                                     <p className="cfo-empty">Add transactions to calculate runway.</p>
                                 )}
                             </div>
+                        </div>
+
+                        {/* Bottom Row: Cash Forecast */}
+                        <div className="cf-section">
+                            <div className="cf-header">
+                                <div className="cf-title-row">
+                                    <div className="cf-title-left">
+                                        <i className="fa-solid fa-calendar-days" style={{ color: 'var(--primary-color)' }}></i>
+                                        <div>
+                                            <span className="cf-title">Cash Forecast</span>
+                                            <span className="cf-subtitle">Know your future cash position before problems happen</span>
+                                        </div>
+                                    </div>
+                                    <div className="cf-range-buttons">
+                                        {[7, 15, 30].map(r => (
+                                            <button
+                                                key={r}
+                                                className={`cf-range-btn ${forecastRange === r ? 'active' : ''}`}
+                                                onClick={() => setForecastRange(r)}
+                                            >
+                                                {r}d
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {forecastLoading ? (
+                                <div className="cf-loading">
+                                    <div className="spinner" style={{ width: '28px', height: '28px', marginBottom: 0, borderWidth: '3px' }}></div>
+                                    <span>Calculating forecast…</span>
+                                </div>
+                            ) : forecastData ? (
+                                <>
+                                    {/* Risk Alert Banner */}
+                                    {forecastData.summary.risk && (
+                                        <div className="cf-risk-alert">
+                                            <i className="fa-solid fa-circle-exclamation"></i>
+                                            <div>
+                                                <strong>Cash Shortage Warning</strong>
+                                                <span>You may run out of cash on <strong>{formatForecastDate(forecastData.summary.risk_date)}</strong> — take action now.</span>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Summary Pills */}
+                                    <div className="cf-summary-grid">
+                                        <div className="cf-summary-pill">
+                                            <span className="cf-pill-label">Current Cash</span>
+                                            <span className="cf-pill-value" style={{ color: forecastData.summary.current_cash >= 0 ? 'var(--text-main)' : 'var(--danger-color)' }}>
+                                                {formatMoney(forecastData.summary.current_cash)}
+                                            </span>
+                                        </div>
+                                        <div className="cf-summary-pill cf-pill-in">
+                                            <span className="cf-pill-label">Incoming ({forecastRange}d)</span>
+                                            <span className="cf-pill-value" style={{ color: 'var(--success-color)' }}>
+                                                +{formatMoney(forecastData.summary.total_incoming)}
+                                            </span>
+                                        </div>
+                                        <div className="cf-summary-pill cf-pill-out">
+                                            <span className="cf-pill-label">Outgoing ({forecastRange}d)</span>
+                                            <span className="cf-pill-value" style={{ color: 'var(--danger-color)' }}>
+                                                -{formatMoney(forecastData.summary.total_outgoing)}
+                                            </span>
+                                        </div>
+                                        <div className="cf-summary-pill cf-pill-net">
+                                            <span className="cf-pill-label">Net Position</span>
+                                            <span className="cf-pill-value" style={{
+                                                color: forecastData.summary.net_projection >= 0 ? 'var(--success-color)' : 'var(--danger-color)',
+                                                fontWeight: '800'
+                                            }}>
+                                                {forecastData.summary.net_projection >= 0 ? '+' : ''}{formatMoney(forecastData.summary.net_projection)}
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    {/* Day-by-day timeline — only show days with events OR risk crossover */}
+                                    {(() => {
+                                        const visible = forecastData.timeline.filter((day, i) => {
+                                            const prev = i > 0 ? forecastData.timeline[i - 1].balance : forecastData.summary.current_cash;
+                                            return day.balance !== prev || day.balance < 0;
+                                        });
+                                        if (visible.length === 0) {
+                                            return (
+                                                <p className="cf-no-events">No receivables or payables due in the next {forecastRange} days — cash balance stays stable.</p>
+                                            );
+                                        }
+                                        return (
+                                            <div className="cf-timeline">
+                                                <div className="cf-timeline-header">
+                                                    <span>Date</span>
+                                                    <span>Event</span>
+                                                    <span className="text-right">Projected Balance</span>
+                                                </div>
+                                                <div className="cf-timeline-body">
+                                                    {forecastData.timeline.map((day, i) => {
+                                                        const prev = i > 0 ? forecastData.timeline[i - 1].balance : forecastData.summary.current_cash;
+                                                        const dayIn = day.balance - prev >= 0 ? day.balance - prev : 0;
+                                                        const dayOut = prev - day.balance > 0 ? prev - day.balance : 0;
+                                                        const changed = day.balance !== prev;
+                                                        const isRisk = day.date === forecastData.summary.risk_date;
+                                                        if (!changed && !isRisk) return null;
+                                                        return (
+                                                            <div key={day.date} className={`cf-timeline-row ${isRisk ? 'cf-row-risk' : ''}`}>
+                                                                <span className="cf-row-date">{formatForecastDate(day.date)}</span>
+                                                                <span className="cf-row-event">
+                                                                    {dayIn > 0 && <span className="cf-event-in">+{formatMoney(dayIn)}</span>}
+                                                                    {dayOut > 0 && <span className="cf-event-out">-{formatMoney(dayOut)}</span>}
+                                                                </span>
+                                                                <span className={`cf-row-balance ${day.balance < 0 ? 'cf-balance-negative' : 'cf-balance-positive'}`}>
+                                                                    {formatMoney(day.balance)}
+                                                                </span>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
+                                </>
+                            ) : (
+                                <p className="cf-no-events">Add transactions to see your cash forecast.</p>
+                            )}
                         </div>
 
                         {/* Bottom Row: Leakage Alerts */}

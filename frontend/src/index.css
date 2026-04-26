@@ -1177,3 +1177,310 @@ input:focus, select:focus {
         padding: 0.75rem 1rem;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   CASH FORECAST SECTION
+══════════════════════════════════════════════════════════ */
+
+.cf-section {
+    margin-top: 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--bg-color);
+}
+
+/* Header */
+.cf-header {
+    padding: 1rem 1.25rem;
+    background: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.cf-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.cf-title-left {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.cf-title-left > i {
+    font-size: 1.1rem;
+    margin-top: 3px;
+}
+
+.cf-title-left > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.cf-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.3px;
+}
+
+.cf-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* Range Selector */
+.cf-range-buttons {
+    display: flex;
+    gap: 0.35rem;
+}
+
+.cf-range-btn {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--bg-color);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.cf-range-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.cf-range-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 82, 204, 0.25);
+}
+
+/* Loading state */
+.cf-loading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem 1.25rem;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+}
+
+/* ─── Risk Alert Banner ─────────────────────── */
+.cf-risk-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin: 1rem 1.25rem 0;
+    padding: 0.9rem 1.1rem;
+    background: #fff0ee;
+    border: 1.5px solid var(--danger-color);
+    border-radius: 8px;
+    animation: slideDown 0.3s ease forwards;
+}
+
+.cf-risk-alert > i {
+    font-size: 1.2rem;
+    color: var(--danger-color);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.cf-risk-alert > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.cf-risk-alert strong {
+    font-size: 0.92rem;
+    color: var(--danger-color);
+    display: block;
+}
+
+.cf-risk-alert span {
+    font-size: 0.84rem;
+    color: #8b2e1e;
+    line-height: 1.45;
+}
+
+.cf-risk-alert span strong {
+    display: inline;
+    color: #8b2e1e;
+    font-weight: 700;
+}
+
+/* ─── Summary Pills ─────────────────────────── */
+.cf-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+}
+
+@media (max-width: 900px) {
+    .cf-summary-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 500px) {
+    .cf-summary-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.cf-summary-pill {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.cf-pill-in  { border-left: 3px solid var(--success-color); }
+.cf-pill-out { border-left: 3px solid var(--danger-color); }
+.cf-pill-net { border-left: 3px solid var(--primary-color); }
+
+.cf-pill-label {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.cf-pill-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.5px;
+}
+
+/* ─── Timeline ──────────────────────────────── */
+.cf-timeline {
+    margin: 0 1.25rem 1.25rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cf-timeline-header {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 1rem;
+    padding: 0.55rem 1rem;
+    background: #FAFBFC;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.cf-timeline-body {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+.cf-timeline-row {
+    display: grid;
+    grid-template-columns: 90px 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s ease;
+    font-size: 0.85rem;
+}
+
+.cf-timeline-row:last-child {
+    border-bottom: none;
+}
+
+.cf-timeline-row:hover {
+    background: #FAFBFC;
+}
+
+.cf-row-risk {
+    background: #fff0ee !important;
+}
+
+.cf-row-date {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.cf-row-event {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.cf-event-in {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--success-color);
+    background: var(--success-bg);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+}
+
+.cf-event-out {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--danger-color);
+    background: var(--danger-bg);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+}
+
+.cf-row-balance {
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.cf-balance-positive { color: var(--success-color); }
+.cf-balance-negative {
+    color: var(--danger-color);
+    background: var(--danger-bg);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+}
+
+/* No Events / Empty State */
+.cf-no-events {
+    padding: 1.25rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .cf-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cf-timeline-header,
+    .cf-timeline-row {
+        grid-template-columns: 70px 1fr auto;
+        gap: 0.5rem;
+        font-size: 0.78rem;
+    }
+}
