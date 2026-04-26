@@ -28,7 +28,15 @@ const AIInsights = () => {
         </div>
     );
 
-    if (insights.length === 0) return null;
+    if (insights.length === 0) return (
+        <div className="ai-insights-card">
+            <div className="ai-header">
+                <i className="fa-solid fa-sparkles ai-icon"></i>
+                <h3>AI Strategic Insights</h3>
+            </div>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Analyzing your data... check back soon for strategic tips.</p>
+        </div>
+    );
 
     return (
         <div className="ai-insights-card">
