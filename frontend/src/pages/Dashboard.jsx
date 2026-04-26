@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import axios from 'axios';
+import AIInsights from '../components/AIInsights';
+import AIChatbot from '../components/AIChatbot';
 
 import { useNavigate } from 'react-router-dom';
 
@@ -269,6 +271,7 @@ const Dashboard = () => {
 
             <div className="dashboard-container">
                 <main className="main-content">
+                    <AIInsights />
 
                     {/* ══════════════════════════════════════════════ */}
                     {/* CFO INSIGHTS SECTION */}
@@ -546,6 +549,7 @@ const Dashboard = () => {
 
                 </main>
             </div>
+            <AIChatbot />
         </div>
     );
 };

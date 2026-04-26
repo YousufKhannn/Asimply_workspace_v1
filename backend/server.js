@@ -7,6 +7,7 @@ const transactionRoutes = require('./routes/transactions');
 const analyticsRoutes = require('./routes/analytics');
 const receivablesRoutes = require('./routes/receivables');
 const payablesRoutes = require('./routes/payables');
+const aiRoutes = require('./routes/ai');
 
 
 const app = express();
@@ -25,6 +26,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/receivables', receivablesRoutes);
 app.use('/api/payables', payablesRoutes);
+app.use('/api/ai', aiRoutes);
 
 
 // Health check
