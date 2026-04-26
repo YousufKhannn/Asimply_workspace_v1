@@ -1,20 +1,20 @@
-:root {
-    /* Zoho/Professional Light Theme Palette */
-    --bg-color: #F4F5F7;
+    /* Premium SaaS Palette */
+    --bg-color: #F8F9FA;
     --surface-color: #FFFFFF;
-    --primary-color: #0052CC;
-    --primary-hover: #0043A6;
+    --primary-color: #D4BBA4; /* Asimply Primary */
+    --accent-color: #E99B28;  /* Asimply Accent */
+    --primary-hover: #C1A68E;
     --text-main: #172B4D;
     --text-muted: #5E6C84;
-    --border-color: #DFE1E6;
+    --border-color: #ECEFF1;
     
-    /* Semantic Colors */
-    --success-color: #00875A;
-    --success-bg: #E3FCEF;
-    --danger-color: #DE350B;
-    --danger-bg: #FFEBE6;
-    --warning-color: #FF991F;
-    --warning-bg: #FFFAE6;
+    /* Status Colors */
+    --success-color: #00A389;
+    --success-bg: #E6F6F4;
+    --danger-color: #FF5252;
+    --danger-bg: #FFF0F0;
+    --warning-color: #FF9F1C;
+    --warning-bg: #FFF8E1;
     
     /* Icon Colors */
     --icon-blue: #0052CC;
@@ -156,13 +156,18 @@ body {
 /* Cards */
 .card {
     background-color: var(--surface-color);
-    border-radius: var(--border-radius);
-    padding: 1.5rem;
+    border-radius: 16px;
+    padding: 1.75rem;
     border: 1px solid var(--border-color);
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 20px rgba(9, 30, 66, 0.05);
     display: flex;
     flex-direction: column;
     height: 100%;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 8px 30px rgba(9, 30, 66, 0.08);
 }
 
 .full-height-card {
@@ -343,20 +348,22 @@ input:focus, select:focus {
 
 .btn-primary {
     width: 100%;
-    padding: 0.65rem;
-    background-color: #FF7452; /* Orange buttons */
+    padding: 0.85rem;
+    background-color: var(--accent-color);
     color: #FFF;
     border: none;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    font-weight: 500;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
     cursor: pointer;
     transition: var(--transition);
     margin-top: 0.5rem;
+    box-shadow: 0 4px 12px rgba(233, 155, 40, 0.2);
 }
 
 .btn-primary:hover {
-    background-color: #E65C38;
+    background-color: #D68A1E;
+    transform: translateY(-1px);
 }
 
 /* Expense Analyzer List */
@@ -1482,5 +1489,169 @@ input:focus, select:focus {
         grid-template-columns: 70px 1fr auto;
         gap: 0.5rem;
         font-size: 0.78rem;
+    }
+}
+
+/* 💎 PREMIUM DASHBOARD REFINEMENTS */
+.dashboard-section {
+    margin-bottom: 4rem;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.section-title-large {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--text-main);
+    letter-spacing: -0.7px;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.section-title-large i {
+    font-size: 1.3rem;
+}
+
+/* 🔴 ATTENTION NEEDED SECTION */
+.cf-risk-alert {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border-radius: 16px;
+    background: #FFF5F5;
+    border: 1px solid rgba(255, 82, 82, 0.2);
+    box-shadow: 0 10px 30px rgba(255, 82, 82, 0.12);
+    transition: transform 0.3s ease;
+}
+
+.cf-risk-alert:hover {
+    transform: scale(1.01);
+}
+
+.cfo-leakage-section {
+    background: #FFF9F2;
+    border: 1px solid rgba(233, 155, 40, 0.2);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(233, 155, 40, 0.08);
+}
+
+.cfo-leakage-header {
+    background: rgba(233, 155, 40, 0.05);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid rgba(233, 155, 40, 0.1);
+}
+
+.cfo-leakage-count {
+    margin-left: auto;
+    background: var(--accent-color);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.cfo-leakage-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid rgba(233, 155, 40, 0.05);
+}
+
+.cfo-leakage-item:last-child {
+    border-bottom: none;
+}
+
+.cfo-leakage-badge {
+    padding: 4px 12px;
+    background: #FFEBE6;
+    color: #FF5252;
+    border-radius: 6px;
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+/* 📊 YOUR BUSINESS TODAY REFINEMENTS */
+.highlight-card {
+    border: 1px solid rgba(212, 187, 164, 0.3);
+    background: linear-gradient(180deg, #FFFFFF 0%, #FAFAFA 100%);
+}
+
+.cf-summary-pill {
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    transition: var(--transition);
+}
+
+.cf-summary-pill:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+}
+
+.cf-pill-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+}
+
+.cf-pill-value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+/* 💼 MONEY CONTROL REFINEMENTS */
+.control-form input {
+    background: white;
+}
+
+.control-form button {
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* MOBILE OPTIMIZATIONS */
+@media (max-width: 768px) {
+    .section-title-large {
+        font-size: 1.3rem;
+    }
+    
+    .grid.layout-top-row {
+        grid-template-columns: 1fr !important;
+        gap: 1.5rem !important;
+    }
+    
+    .control-form {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .card {
+        padding: 1.25rem;
+    }
+    
+    .metric-card .value {
+        font-size: 1.8rem;
     }
 }
