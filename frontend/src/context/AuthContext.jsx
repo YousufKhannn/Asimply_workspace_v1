@@ -49,13 +49,10 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    // Called after the user clicks "I've Paid" and backend confirms
-    const markPaid = () => {
-        setUser(prev => prev ? { ...prev, is_paid: true } : prev);
-    };
+
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, loading, markPaid, API_URL }}>
+        <AuthContext.Provider value={{ user, login, register, logout, loading, API_URL }}>
             {!loading && children}
         </AuthContext.Provider>
     );

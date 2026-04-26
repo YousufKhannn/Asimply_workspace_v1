@@ -5,7 +5,6 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import LandingPage from './pages/LandingPage';
-import PaymentWall from './pages/PaymentWall';
 
 // Requires login
 const PrivateRoute = ({ children }) => {
@@ -14,14 +13,7 @@ const PrivateRoute = ({ children }) => {
     return user ? children : <Navigate to="/login" />;
 };
 
-// Already logged in & paid → skip payment wall
-const PaymentRoute = ({ children }) => {
-    const { user, loading } = useContext(AuthContext);
-    if (loading) return <div className="loader-view" style={{display: 'flex'}}><div className="spinner"></div></div>;
-    if (!user) return <Navigate to="/login" />;
-    if (user.is_paid) return <Navigate to="/dashboard" />;
-    return children;
-};
+
 
 function App() {
     return (
@@ -31,14 +23,6 @@ function App() {
                     <Route path="/" element={<LandingPage />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/register" element={<Register />} />
-                    <Route
-                        path="/payment"
-                        element={
-                            <PaymentRoute>
-                                <PaymentWall />
-                            </PaymentRoute>
-                        }
-                    />
                     <Route
                         path="/dashboard"
                         element={

@@ -19,12 +19,7 @@ const Dashboard = () => {
     const [receivables, setReceivables] = useState([]);
     const [payables, setPayables] = useState([]);
 
-    const TRIAL_LIMIT = 5;
-    const isTrialExceeded = !user?.is_paid && (
-        transactions.length >= TRIAL_LIMIT || 
-        receivables.length > 0 || 
-        payables.length > 0
-    );
+
     
     const [alerts, setAlerts] = useState([]);
     
@@ -72,16 +67,7 @@ const Dashboard = () => {
             
             generateAlerts(sumRes.data, recRes.data, payRes.data);
 
-            // Redirect if trial exceeded on load
-            const exceededOnLoad = !user?.is_paid && (
-                txRes.data.length >= TRIAL_LIMIT || 
-                recRes.data.length > 0 || 
-                payRes.data.length > 0
-            );
 
-            if (exceededOnLoad) {
-                navigate('/payment');
-            }
         } catch (err) {
             console.error('Error fetching data', err);
         }
@@ -152,11 +138,6 @@ const Dashboard = () => {
 
     const handleAddTransaction = async (e) => {
         e.preventDefault();
-        
-        if (isTrialExceeded) {
-            navigate('/payment');
-            return;
-        }
 
         let submitAmount = parseFloat(amount);
         if (currency === 'USD') submitAmount = submitAmount * exchangeRate;
@@ -172,11 +153,6 @@ const Dashboard = () => {
 
     const handleAddReceivable = async (e) => {
         e.preventDefault();
-
-        if (isTrialExceeded) {
-            navigate('/payment');
-            return;
-        }
 
         let submitAmount = parseFloat(rAmount);
         if (currency === 'USD') submitAmount = submitAmount * exchangeRate;
@@ -196,11 +172,6 @@ const Dashboard = () => {
 
     const handleAddPayable = async (e) => {
         e.preventDefault();
-
-        if (isTrialExceeded) {
-            navigate('/payment');
-            return;
-        }
 
         let submitAmount = parseFloat(pAmount);
         if (currency === 'USD') submitAmount = submitAmount * exchangeRate;

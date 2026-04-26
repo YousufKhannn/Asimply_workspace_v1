@@ -7,7 +7,7 @@ const transactionRoutes = require('./routes/transactions');
 const analyticsRoutes = require('./routes/analytics');
 const receivablesRoutes = require('./routes/receivables');
 const payablesRoutes = require('./routes/payables');
-const paymentRoutes = require('./routes/payment');
+
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/receivables', receivablesRoutes);
 app.use('/api/payables', payablesRoutes);
-app.use('/api/payment', paymentRoutes);
+
 
 // Health check
 app.get('/api/health', (req, res) => {
