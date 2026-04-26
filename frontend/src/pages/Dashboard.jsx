@@ -19,6 +19,11 @@ const Dashboard = () => {
     const [receivables, setReceivables] = useState([]);
     const [payables, setPayables] = useState([]);
 
+    // CFO Insights state
+    const [runway, setRunway] = useState(null);
+    const [leakage, setLeakage] = useState([]);
+    const [healthScore, setHealthScore] = useState(null);
+
 
     
     const [alerts, setAlerts] = useState([]);
@@ -51,12 +56,15 @@ const Dashboard = () => {
 
     const fetchData = async () => {
         try {
-            const [txRes, sumRes, expRes, recRes, payRes] = await Promise.all([
+            const [txRes, sumRes, expRes, recRes, payRes, runwayRes, leakageRes, healthRes] = await Promise.all([
                 axios.get(`${API_URL}/api/transactions`),
                 axios.get(`${API_URL}/api/analytics/dashboard-summary`),
                 axios.get(`${API_URL}/api/analytics/expense-breakdown`),
                 axios.get(`${API_URL}/api/receivables`),
-                axios.get(`${API_URL}/api/payables`)
+                axios.get(`${API_URL}/api/payables`),
+                axios.get(`${API_URL}/api/analytics/runway`),
+                axios.get(`${API_URL}/api/analytics/leakage`),
+                axios.get(`${API_URL}/api/analytics/health`)
             ]);
             
             setTransactions(txRes.data);
@@ -64,9 +72,11 @@ const Dashboard = () => {
             setExpenseCategories(expRes.data);
             setReceivables(recRes.data);
             setPayables(payRes.data);
+            setRunway(runwayRes.data);
+            setLeakage(leakageRes.data);
+            setHealthScore(healthRes.data);
             
             generateAlerts(sumRes.data, recRes.data, payRes.data);
-
 
         } catch (err) {
             console.error('Error fetching data', err);
@@ -193,6 +203,26 @@ const Dashboard = () => {
     const diffClass = diff > 0 ? 'text-success' : (diff < 0 ? 'text-danger' : 'text-neutral');
     const profitInsight = summary.profit > 0 ? 'Your business is profitable this month' : (summary.profit < 0 ? 'Your expenses are higher than revenue' : 'Revenue and expenses are perfectly balanced');
 
+    // ─── CFO Insights Helpers ───────────────────────────
+    const getRunwayColor = (status) => {
+        if (!status) return 'var(--text-muted)';
+        if (status === 'healthy') return 'var(--success-color)';
+        if (status === 'warning') return 'var(--warning-color)';
+        return 'var(--danger-color)';
+    };
+
+    const getScoreColor = (score) => {
+        if (score >= 7) return 'var(--success-color)';
+        if (score >= 4) return 'var(--warning-color)';
+        return 'var(--danger-color)';
+    };
+
+    const getScoreBg = (score) => {
+        if (score >= 7) return 'var(--success-bg)';
+        if (score >= 4) return 'var(--warning-bg)';
+        return 'var(--danger-bg)';
+    };
+
     return (
         <div id="dashboard-view" style={{ display: 'block' }}>
             <header className="header">
@@ -215,7 +245,143 @@ const Dashboard = () => {
 
             <div className="dashboard-container">
                 <main className="main-content">
-                    
+
+                    {/* ══════════════════════════════════════════════ */}
+                    {/* CFO INSIGHTS SECTION */}
+                    {/* ══════════════════════════════════════════════ */}
+                    <div className="cfo-insights-section">
+                        <div className="cfo-section-header">
+                            <div className="cfo-section-badge">
+                                <i className="fa-solid fa-brain"></i>
+                                CFO Insights
+                            </div>
+                            <p className="cfo-section-sub">Real-time intelligence for your business</p>
+                        </div>
+
+                        {/* Top Row: Health Score + Cash Runway */}
+                        <div className="cfo-top-row">
+
+                            {/* ── FINANCIAL HEALTH SCORE ── */}
+                            <div className="cfo-card cfo-health-card" style={{
+                                borderTop: `4px solid ${healthScore ? getScoreColor(healthScore.score) : 'var(--border-color)'}`
+                            }}>
+                                <div className="cfo-card-header">
+                                    <div className="cfo-card-icon" style={{
+                                        background: healthScore ? getScoreBg(healthScore.score) : 'var(--bg-color)',
+                                        color: healthScore ? getScoreColor(healthScore.score) : 'var(--text-muted)'
+                                    }}>
+                                        <i className="fa-solid fa-heart-pulse"></i>
+                                    </div>
+                                    <span className="cfo-card-label">Financial Health</span>
+                                </div>
+                                {healthScore ? (
+                                    <>
+                                        <div className="cfo-score-display">
+                                            <span className="cfo-score-number" style={{ color: getScoreColor(healthScore.score) }}>
+                                                {healthScore.score}
+                                            </span>
+                                            <span className="cfo-score-denom">/10</span>
+                                        </div>
+                                        <div className="cfo-score-bar-wrap">
+                                            <div className="cfo-score-bar-track">
+                                                <div
+                                                    className="cfo-score-bar-fill"
+                                                    style={{
+                                                        width: `${healthScore.score * 10}%`,
+                                                        background: getScoreColor(healthScore.score)
+                                                    }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <p className="cfo-card-status" style={{ color: getScoreColor(healthScore.score) }}>
+                                            {healthScore.status}
+                                        </p>
+                                        <p className="cfo-card-message">{healthScore.message}</p>
+                                        {healthScore.profit_margin !== undefined && (
+                                            <p className="cfo-card-meta">Profit margin: <strong>{healthScore.profit_margin}%</strong></p>
+                                        )}
+                                    </>
+                                ) : (
+                                    <p className="cfo-empty">Add transactions to calculate your health score.</p>
+                                )}
+                            </div>
+
+                            {/* ── CASH RUNWAY ── */}
+                            <div className="cfo-card cfo-runway-card" style={{
+                                borderTop: `4px solid ${runway ? getRunwayColor(runway.status) : 'var(--border-color)'}`
+                            }}>
+                                <div className="cfo-card-header">
+                                    <div className="cfo-card-icon" style={{
+                                        background: runway ? (runway.status === 'healthy' ? 'var(--success-bg)' : runway.status === 'warning' ? 'var(--warning-bg)' : 'var(--danger-bg)') : 'var(--bg-color)',
+                                        color: runway ? getRunwayColor(runway.status) : 'var(--text-muted)'
+                                    }}>
+                                        <i className="fa-solid fa-plane-departure"></i>
+                                    </div>
+                                    <span className="cfo-card-label">Cash Runway</span>
+                                </div>
+                                {runway ? (
+                                    <>
+                                        <p className="cfo-runway-value" style={{ color: getRunwayColor(runway.status) }}>
+                                            {runway.runway_months === null
+                                                ? '∞'
+                                                : runway.current_cash < 0
+                                                ? 'At Risk'
+                                                : `${runway.runway_months} mo`}
+                                        </p>
+                                        <p className="cfo-card-message">
+                                            {runway.runway_months === null
+                                                ? 'Infinite runway — no burn rate'
+                                                : runway.current_cash < 0
+                                                ? 'Cash balance is negative'
+                                                : `You can operate for ${runway.runway_months} month${runway.runway_months !== 1 ? 's' : ''} at current burn`}
+                                        </p>
+                                        <div className="cfo-meta-row">
+                                            <div className="cfo-meta-pill">
+                                                <span>Cash</span>
+                                                <strong>{formatMoney(runway.current_cash)}</strong>
+                                            </div>
+                                            <div className="cfo-meta-pill">
+                                                <span>Burn/mo</span>
+                                                <strong>{formatMoney(runway.monthly_burn)}</strong>
+                                            </div>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <p className="cfo-empty">Add transactions to calculate runway.</p>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Bottom Row: Leakage Alerts */}
+                        {leakage.length > 0 && (
+                            <div className="cfo-leakage-section">
+                                <div className="cfo-leakage-header">
+                                    <i className="fa-solid fa-triangle-exclamation" style={{ color: 'var(--warning-color)' }}></i>
+                                    <span>Profit Leakage Detected</span>
+                                    <span className="cfo-leakage-count">{leakage.length} spike{leakage.length !== 1 ? 's' : ''}</span>
+                                </div>
+                                <div className="cfo-leakage-list">
+                                    {leakage.map((spike, i) => (
+                                        <div key={i} className="cfo-leakage-item">
+                                            <div className="cfo-leakage-icon">
+                                                <i className="fa-solid fa-arrow-trend-up"></i>
+                                            </div>
+                                            <div className="cfo-leakage-body">
+                                                <span className="cfo-leakage-msg">{spike.message}</span>
+                                                <span className="cfo-leakage-sub">
+                                                    This week: {formatMoney(spike.current_week)}
+                                                    {spike.prev_week > 0 && ` vs last week: ${formatMoney(spike.prev_week)}`}
+                                                </span>
+                                            </div>
+                                            <div className="cfo-leakage-badge">+{spike.increase_percent}%</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                    {/* END CFO INSIGHTS */}
+
                     {/* ALERTS SECTION (Always on top for visibility) */}
                     <div id="alerts-container" className="alerts-container">
                         {alerts.map((alert, i) => (

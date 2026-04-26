@@ -858,3 +858,322 @@ input:focus, select:focus {
         background: transparent;
     }
 }
+
+/* ══════════════════════════════════════════════════════════
+   CFO INSIGHTS SECTION
+══════════════════════════════════════════════════════════ */
+
+.cfo-insights-section {
+    margin-bottom: 2.5rem;
+    padding: 1.75rem;
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Section Header */
+.cfo-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.cfo-section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, #172B4D, #0052CC);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    padding: 0.35rem 0.9rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+}
+
+.cfo-section-sub {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    margin: 0;
+}
+
+/* Two-column top row */
+.cfo-top-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .cfo-top-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Individual CFO Card */
+.cfo-card {
+    background: var(--bg-color);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: box-shadow 0.2s ease;
+}
+
+.cfo-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.cfo-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.cfo-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.cfo-card-label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+}
+
+/* Health Score Display */
+.cfo-score-display {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    margin: 0.25rem 0;
+}
+
+.cfo-score-number {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+}
+
+.cfo-score-denom {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.cfo-score-bar-wrap {
+    margin: 0.5rem 0;
+}
+
+.cfo-score-bar-track {
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.cfo-score-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.cfo-card-status {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.cfo-card-message {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.cfo-card-meta {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* Runway Value Display */
+.cfo-runway-value {
+    font-size: 2.75rem;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    line-height: 1;
+    margin: 0.25rem 0;
+}
+
+/* Meta Pills Row (cash / burn) */
+.cfo-meta-row {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.cfo-meta-pill {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.cfo-meta-pill span {
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    font-weight: 600;
+}
+
+.cfo-meta-pill strong {
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 0.88rem;
+}
+
+/* Empty State */
+.cfo-empty {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 0.5rem 0;
+}
+
+/* ─── Leakage Section ──────────────────────── */
+.cfo-leakage-section {
+    border: 1px solid rgba(255, 153, 31, 0.35);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--warning-bg);
+}
+
+.cfo-leakage-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.25rem;
+    background: rgba(255, 153, 31, 0.12);
+    border-bottom: 1px solid rgba(255, 153, 31, 0.25);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.cfo-leakage-count {
+    margin-left: auto;
+    background: var(--warning-color);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+}
+
+.cfo-leakage-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.cfo-leakage-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+    padding: 0.9rem 1.25rem;
+    border-bottom: 1px solid rgba(255, 153, 31, 0.15);
+    transition: background 0.15s ease;
+}
+
+.cfo-leakage-item:last-child {
+    border-bottom: none;
+}
+
+.cfo-leakage-item:hover {
+    background: rgba(255, 153, 31, 0.08);
+}
+
+.cfo-leakage-icon {
+    width: 30px;
+    height: 30px;
+    background: rgba(255, 153, 31, 0.15);
+    color: var(--warning-color);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.cfo-leakage-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+}
+
+.cfo-leakage-msg {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-main);
+    line-height: 1.4;
+}
+
+.cfo-leakage-sub {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.cfo-leakage-badge {
+    flex-shrink: 0;
+    background: var(--danger-bg);
+    color: var(--danger-color);
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    align-self: flex-start;
+    margin-top: 2px;
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+    .cfo-insights-section {
+        padding: 1.25rem;
+    }
+    .cfo-score-number {
+        font-size: 2.25rem;
+    }
+    .cfo-runway-value {
+        font-size: 2rem;
+    }
+    .cfo-leakage-item {
+        padding: 0.75rem 1rem;
+    }
+}
